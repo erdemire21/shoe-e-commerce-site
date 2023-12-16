@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Random Products</h1>
+
+    <div class="product">
+        <h2>Product 1</h2>
+        <p>Description for Product 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p>Price: $19.99</p>
+    </div>
+
+    <div class="product">
+        <h2>Product 2</h2>
+        <p>Description for Product 2. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p>Price: $24.99</p>
+    </div>
+
+    <div class="product">
+        <h2>Product 3</h2>
+        <p>Description for Product 3. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p>Price: $29.99</p>
+    </div>
+
+    <div class="product">
+        <h2>Product 4</h2>
+        <p>Description for Product 4. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p>Price: $39.99</p>
+    </div>
+
+    <!-- Form to redirect to payment_page when Payment button is pressed -->
+    <form action="{{ url_for('payment_page') }}" method="GET">
+        <button type="submit">Payment</button>
+    </form>
+
+
+</body>
+</html>
