@@ -70,12 +70,18 @@ def payment_page():
     if request.method == 'POST':
         card_number = request.form.get('card-number')
 
-        # Use the is_valid_credit_card function to check if the credit card is valid
+        
         if is_valid_credit_card(card_number):
-            # If valid, redirect to payment_success.html
+            address = request.form['address']
+            card_name = request.form['card-name']
+            expiration_date = request.form['expiration-date']
+            cvv = request.form['cvv']
+
+            insert_private_info(address, card_name, card_number, expiration_date, cvv, session['email'])
+
             return redirect(url_for('payment_success'))
         else:
-            # If not valid, redirect to payment_fail.html
+            
             return redirect(url_for('payment_fail'))
 
     # If it's a GET request, render the 'payment_page.html' template

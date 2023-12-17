@@ -118,3 +118,15 @@ def is_valid_credit_card(card_number):
         alternate = not alternate
 
     return total % 10 == 0
+
+def insert_private_info(address, card_name, card_number, expiration_date, cvv,email):
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO user_private_info (address, card_name, card_number, expiration_date, cvv, email)
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """, (address, card_name, card_number, expiration_date, cvv, email))
+
+    conn.commit()
+    conn.close()
