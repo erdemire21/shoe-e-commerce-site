@@ -6,7 +6,7 @@ body {
 .header {
     background-color: black;
     color: white;
-    padding: 0px 20px;
+    padding: 18px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -18,13 +18,13 @@ body {
 }
 
 .search-box {
-    position: relative;
+    position: absolute;
     display: flex;
     align-items:center;
     width: 700px;
     height: 90px;
     margin-bottom: 60px;
-    margin-right: 58px;
+    margin-left: 604px;
 }
 
 .search-box input {
@@ -68,6 +68,8 @@ body {
 }
 
 .user-section .sign-in {
+    color: white;
+    text-decoration: none;
     margin-left: 0px;
     font-weight: bold;
     cursor: pointer;
@@ -117,12 +119,13 @@ body {
 }
 
 .cart-button {
+    position: absolute;
     margin-top: 92px;
 }   
 
 .cart-button img {
     max-height: 35px;
     cursor: pointer;
-    margin-right: 20px;
+    margin-left: 1824px;
 }
 
