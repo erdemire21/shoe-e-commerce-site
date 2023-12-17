@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="cart-style.css">
+</head>
+<body>
+
+    <section>
+        <div class="product">
+            <h2>Product 1</h2>
+            <p>Description of Product 1. Price: $19.99</p>
+            <button onclick="addToCart('Product 1', 19.99)">Add to Cart</button>
+        </div>
+
+        <div class="product">
+            <h2>Product 2</h2>
+            <p>Description of Product 2. Price: $29.99</p>
+            <button onclick="addToCart('Product 2', 29.99)">Add to Cart</button>
+        </div>
+    </section>
+
+    <section class="cart">
+        <h2>Shopping Cart</h2>
+        <ul id="cartItems"></ul>
+        <p>Total: $<span id="total">0.00</span></p>
+        <button id="paymentButton" onclick="proceedToPayment()">Proceed to Payment</button>
+    </section>
+
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addToCart(productName, price) {
+            const existingItem = cart.find(item => item.name === productName);
+
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ name: productName, price: price, quantity: 1 });
+            }
+
+            total += price;
+
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItemsElement = document.getElementById('cartItems');
+            const totalElement = document.getElementById('total');
+
+            // Clear the cart items
+            cartItemsElement.innerHTML = '';
+
+            // Populate the cart items
+            cart.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${item.name} - $${item.price.toFixed(2)} x `;
+                
+                const quantitySpan = document.createElement('span');
+                quantitySpan.classList.add('quantity');
+                quantitySpan.textContent = item.quantity;
+                listItem.appendChild(quantitySpan);
+
+                const increaseButton = document.createElement('button');
+                increaseButton.textContent = '+';
+                increaseButton.onclick = () => increaseQuantity(item);
+                listItem.appendChild(increaseButton);
+
+                const decreaseButton = document.createElement('button');
+                decreaseButton.textContent = '-';
+                decreaseButton.onclick = () => decreaseQuantity(item);
+                listItem.appendChild(decreaseButton);
+
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.classList.add('removeButton');
+                removeButton.onclick = () => removeFromCart(item);
+                listItem.appendChild(removeButton);
+
+                cartItemsElement.appendChild(listItem);
+            });
+
+            // Update the total
+            totalElement.textContent = total.toFixed(2);
+        }
+
+        function increaseQuantity(item) {
+            item.quantity++;
+            total += item.price;
+            updateCart();
+        }
+
+        function decreaseQuantity(item) {
+            if (item.quantity > 1) {
+                item.quantity--;
+                total -= item.price;
+                updateCart();
+            }
+        }
+
+        function removeFromCart(item) {
+            total -= item.price * item.quantity;
+            cart = cart.filter(cartItem => cartItem !== item);
+            updateCart();
+        }
+
+        function proceedToPayment() {
+            // Add logic to navigate to the payment page
+            alert('Proceeding to Payment Page. Implement your navigation logic here.');
+        }
+    </script>
+
+</body>
+</html>

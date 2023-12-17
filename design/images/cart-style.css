@@ -1,0 +1,66 @@
+/* Add your shopping cart styles here */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    display: flex;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em;
+    flex: 1; /* Make header take remaining space */
+}
+
+section {
+    margin: 20px;
+    flex: 1; /* Make section take remaining space */
+}
+
+.product {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+
+.cart {
+    border: 1px solid #555;
+    padding: 10px;
+    background-color: #f0f0f0;
+    margin-top: 20px;
+    width: 200px; /* Set a fixed width for the cart */
+    position: fixed;
+    right: 20px;
+    top: 70px; /* Adjust top position as needed */
+}
+
+button {
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+.quantity {
+    display: inline-block;
+    margin: 0 10px;
+    color: #555;
+}
+
+#paymentButton {
+    margin-top: 10px;
+    background-color: #4CAF50;
+}
+
+.removeButton {
+    background-color: #ff4d4d;
+}
