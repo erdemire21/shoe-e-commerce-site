@@ -29,7 +29,7 @@ def add_user_to_database(username, email, password):
         cursor = connection.cursor()
 
         # Check if the email is already in use
-        check_query = "SELECT * FROM email_pswd WHERE email = %s"
+        check_query = "SELECT * FROM user_info WHERE email = %s"
         cursor.execute(check_query, (email,))
         existing_user = cursor.fetchone()
 
@@ -37,7 +37,7 @@ def add_user_to_database(username, email, password):
             return "Email is already in use. Choose a different one."
 
         # Insert the new user into the database
-        insert_query = "INSERT INTO email_pswd (create_time, name, email, password) VALUES (NOW(), %s, %s, %s)"
+        insert_query = "INSERT INTO user_info (create_time, name, email, password) VALUES (NOW(), %s, %s, %s)"
         cursor.execute(insert_query, (username, email, password))
         connection.commit()
 
@@ -68,7 +68,7 @@ def authenticate_user(email, password):
         cursor = connection.cursor()
 
         # Check user credentials
-        query = "SELECT * FROM email_pswd WHERE email = %s AND password = %s"
+        query = "SELECT * FROM user_info WHERE email = %s AND password = %s"
         cursor.execute(query, (email, password))
         user = cursor.fetchone()
 
