@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #cart {
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        #total {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+    <title>Shopping Cart</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Shopping Cart</h1>
+        <div id="cart">
+            <!-- Cart items will be displayed here -->
+        </div>
+        <div id="total">Total: $0.00</div>
+        <button id="proceedBtn" onclick="proceedToPayment()">Proceed to Payment</button>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(product) {
+            cart.push(product);
+            updateCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartContainer = document.getElementById('cart');
+            const totalElement = document.getElementById('total');
+
+            // Clear the cart container
+            cartContainer.innerHTML = '';
+
+            // Display cart items
+            cart.forEach((product, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <span>${product.name} - $${product.price.toFixed(2)}</span>
+                    <button onclick="removeFromCart(${index})">Remove</button>
+                `;
+                cartContainer.appendChild(cartItem);
+            });
+
+            // Calculate and display the total
+            const total = cart.reduce((sum, product) => sum + product.price, 0);
+            totalElement.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        function proceedToPayment() {
+            // Implement payment processing logic here if needed
+
+            // Send a request to the Flask server to add items to the database
+            fetch('/add_to_database', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cart }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add items to the database');
+                    }
+                    // Redirect to the payment page after successfully adding items to the database
+                    window.location.href = 'payment_page.html';
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Error adding items to the database. Please try again.');
+                });
+        }
+    </script>
+</body>
+
+</html>
