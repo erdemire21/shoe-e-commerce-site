@@ -2,10 +2,11 @@ import mysql.connector
 from mysql.connector import Error
 
 db_config = {
-    'host': 'localhost',
-    'database': 'login',
-    'user': 'root',
-    'password': 'E19741453'
+    'host': 'sql11.freemysqlhosting.net',
+    'database': 'sql11670983',
+    'user': 'sql11670983',
+    'password': 'T7p8T65KtN',
+    'port': 3306,
 }
 
 def add_user_to_database(username, email, password):
