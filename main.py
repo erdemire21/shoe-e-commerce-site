@@ -4,6 +4,7 @@ from mysql.connector import Error
 from utilization import *
 import random
 
+
 app = Flask(__name__)
 # Basically resets the cookie every time the server is restarted
 key = random.randint(1, 1000000000)
@@ -36,7 +37,7 @@ def login():
 
         if authenticate_user(email, password):
             session['email'] = email  # Store the email in the session
-            return redirect(url_for('browse2'))
+            return redirect(url_for('shopping_cart'))
 
         return "Invalid email or password. Please try again."
 
@@ -48,119 +49,6 @@ def browse2():
         return render_template('browse2.html', email=session['email'])
     else:
         return redirect(url_for('main_page'))
-
-
-
-
-# Part of İsmail 
-
-
-def get_items():
-    try:
-        # Connect to MySQL
-        connection = mysql.connector.connect(**db_config)
-        cursor = connection.cursor()
-
-        # Fetch data from the table (replace 'your_table' with your actual table name)
-        query = "SELECT * FROM Shopping_cart"             # cart current
-        cursor.execute(query)
-        items = cursor.fetchall()
-
-        # Close the cursor and connection
-        cursor.close()
-        connection.close()
-
-        return items
-
-    except Exception as e:
-        return []
-
-# Route to display items from the MySQL table
-@app.route('/')
-def display_items():
-    items = get_items()
-    total_price = sum(item[2] * item[3] for item in items)
-    return render_template('cart.html', items=items, total_price=total_price)
-
-# Route to decrease or remove items
-@app.route('/decrease_item/<int:item_id>')                     # <int:item_id> değiştirildi string yapıldı
-def decrease_item(item_id):
-
-    connection = mysql.connector.connect(**db_config)
-    cursor = connection.cursor()
-
-    # Decrease quantity for the specified item_id
-    update_query = "UPDATE Shopping_cart SET quantity = quantity - 1 WHERE item_id = %s"
-    cursor.execute(update_query, (item_id,))
-    connection.commit()
-
-    # Check if quantity is zero, then remove the row
-    check_quantity_query = "SELECT quantity FROM Shopping_cart WHERE item_id = %s"
-    cursor.execute(check_quantity_query, (item_id,))
-    quantity = cursor.fetchone()[0]
-
-    if quantity == 0:
-        delete_query = "DELETE FROM Shopping_cart WHERE item_id = %s"
-        cursor.execute(delete_query, (item_id,))
-        connection.commit()
-
-    # Close the database connection
-    cursor.close()
-    connection.close()
-
-    # Redirect back to the main page after updating the table
-    return redirect(url_for('display_items'))
-
-
-# Route to increase items
-@app.route('/increase_item/<int:item_id>')
-def increase_item(item_id):
-
-    connection = mysql.connector.connect(**db_config)
-    cursor = connection.cursor()
-    
-    # Increase quantity for the specified item_id
-    update_query = "UPDATE Shopping_cart SET quantity = quantity + 1 WHERE item_id = %s"
-    cursor.execute(update_query, (item_id,))
-    connection.commit()
-
-    # Close the database connection
-    cursor.close()
-    connection.close()
-
-    # Redirect back to the main page after updating the table
-    return redirect(url_for('display_items'))
-
-# Route to remove an item
-@app.route('/remove_item/<int:item_id>')
-def remove_item(item_id):
-
-    connection = mysql.connector.connect(**db_config)
-    cursor = connection.cursor()
-    
-    #Remove row for the specified item_id
-    remove_query = "DELETE FROM Shopping_cart WHERE item_id = %s"
-    cursor.execute(remove_query, (item_id,))
-    connection.commit()
-    
-    # Close the database connection
-    cursor.close()
-    connection.close()
-
-    # Redirect back to the main page after removing the item
-    return redirect(url_for('display_items'))
-
-# Route to proceed to payment
-@app.route('/proceed_to_payment')
-def proceed_to_payment():
-    # Add logic to handle the payment process
-    # (you need to implement this part based on your payment flow)
-    return render_template('payment_page.html')
-
-
-# End of the part of İsmail
-
-
 
 
 @app.route('/payment_page', methods=['GET', 'POST'])
@@ -177,13 +65,29 @@ def payment_page():
 
             insert_private_info(address, card_name, card_number, expiration_date, cvv, session['email'])
 
+            ###### New Code ######
+            # Get all the items that have email = session['email'] from the shopping_cart table
+            # Generate random order Id
+            order_id = random.randint(1, 1000000000)
+
+            insert_into_orders(table = 'shopping_cart', email=session['email'],order_id=order_id)
+
+            ###### End New Code ######
             return redirect(url_for('payment_success'))
         else:
             
             return redirect(url_for('payment_fail'))
 
     # If it's a GET request, render the 'payment_page.html' template
-    return render_template('payment_page.html')
+    # products = get_items_as_dictionary()
+    # total = sum(product['price'] * product['quantity'] for product in products)
+    # total_quantity = sum(product['quantity'] for product in products)
+
+    # return render_template('payment_page.html', products=products, total=total, total_quantity=total_quantity)
+    # return render_template('payment_page.html', products = get_items_as_dictionary(email = session['email']))
+    items = get_items(email = session['email'])
+    total_price = sum(item[1] * item[2] for item in items)
+    return render_template('payment_page.html', items = get_items(email = session['email']), total_price = total_price)
 
 
 @app.route('/payment_success')
@@ -194,6 +98,86 @@ def payment_success():
 @app.route('/payment_fail')
 def payment_fail():
     return render_template('payment_fail.html')
+
+
+##### New Code #####
+@app.route('/shopping_cart', methods=['GET', 'POST'])
+def shopping_cart():
+    items = get_items(session['email'])
+    total_price = sum(item[1] * item[2] for item in items)
+    return render_template('shopping_cart.html', items=items, total_price=total_price)
+
+
+# Route to decrease or remove items
+@app.route('/decrease_item/<int:item_id>')              
+def decrease_item(item_id):
+
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor()
+
+    # Decrease quantity for the specified item_id
+    update_query = "UPDATE shopping_cart SET quantity = quantity - 1 WHERE item_id = %s"
+    cursor.execute(update_query, (item_id,))
+    connection.commit()
+
+    # Check if quantity is zero, then remove the row
+    check_quantity_query = "SELECT quantity FROM shopping_cart WHERE item_id = %s"
+    cursor.execute(check_quantity_query, (item_id,))
+    quantity = cursor.fetchone()[0]
+
+    if quantity == 0:
+        delete_query = "DELETE FROM shopping_cart WHERE item_id = %s"
+        cursor.execute(delete_query, (item_id,))
+        connection.commit()
+
+    # Close the database connection
+    cursor.close()
+    connection.close()
+
+    # Redirect back to the main page after updating the table
+    return redirect(url_for('shopping_cart'))
+
+
+# Route to increase items
+@app.route('/increase_item/<int:item_id>')
+def increase_item(item_id):
+
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor()
+    
+    # Increase quantity for the specified item_id
+    update_query = "UPDATE shopping_cart SET quantity = quantity + 1 WHERE item_id = %s"
+    cursor.execute(update_query, (item_id,))
+    connection.commit()
+
+    # Close the database connection
+    cursor.close()
+    connection.close()
+
+    # Redirect back to the main page after updating the table
+    return redirect(url_for('shopping_cart'))
+
+# Route to remove an item
+@app.route('/remove_item/<int:item_id>')
+def remove_item(item_id):
+
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor()
+    
+    #Remove row for the specified item_id
+    remove_query = "DELETE FROM shopping_cart WHERE item_id = %s"
+    cursor.execute(remove_query, (item_id,))
+    connection.commit()
+    
+    # Close the database connection
+    cursor.close()
+    connection.close()
+
+    # Redirect back to the main page after removing the item
+    return redirect(url_for('shopping_cart'))
+
+
+##### End New Code #####
 
 
 

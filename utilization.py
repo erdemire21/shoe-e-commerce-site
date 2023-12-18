@@ -86,10 +86,11 @@ def authenticate_user(email, password):
             cursor.close()
             connection.close()
 
+
 def is_valid_credit_card(card_number):
     """
     Check if a credit card number is valid.
-
+    Example working card numbers: 5555555555554444
     Args:
         card_number (str): The credit card number to be validated.
 
@@ -119,6 +120,7 @@ def is_valid_credit_card(card_number):
 
     return total % 10 == 0
 
+
 def insert_private_info(address, card_name, card_number, expiration_date, cvv,email):
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor()
@@ -131,9 +133,20 @@ def insert_private_info(address, card_name, card_number, expiration_date, cvv,em
     conn.commit()
     conn.close()
 
-def get_items(query = "SELECT * FROM Shopping_cart"):
-    try:
 
+def get_items(email):
+    """
+    Retrieve items from the Shopping_cart table based on the provided query.
+
+    Args:
+        query (str): The SQL query to execute (default is "SELECT * FROM Shopping_cart").
+
+    Returns:
+        list: A list of items retrieved from the database.
+
+    """
+    query = f"SELECT * FROM shopping_cart_with_product_names WHERE email = '{email}'"
+    try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
 
@@ -145,5 +158,94 @@ def get_items(query = "SELECT * FROM Shopping_cart"):
 
         return items
 
+        # products = [{"name": product[5], "price": product[2]} for product in items]
+        # return products
     except Exception as e:
-        return []
+        return {}
+
+
+def get_items_as_dictionary(email):
+    """
+    Retrieve items from the Shopping_cart table based on the provided query.
+
+    Args:
+        query (str): The SQL query to execute (default is "SELECT * FROM Shopping_cart").
+
+    Returns:
+        list: A list of items retrieved from the database.
+
+    """
+    query = f"SELECT * FROM shopping_cart_with_product_names WHERE email = '{email}'"
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+
+        cursor.execute(query)
+        items = cursor.fetchall()
+
+        cursor.close()
+        connection.close()
+
+        products = [{"name": product[4], "price": product[1]} for product in items]
+        return products
+    except Exception as e:
+        return {}
+    
+
+def delete_items_by_email_from_shopping_cart(email):
+    """
+    Delete all entries in the Shopping_cart table where the email column has the specified value.
+
+    Args:
+        email (str): The email value to match for deletion.
+
+    Returns:
+        bool: True if the deletion is successful, False otherwise.
+    """
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+
+        # SQL query to delete entries with a specific email value
+        delete_query = f"DELETE FROM Shopping_cart WHERE email = '{email}'"
+        
+        cursor.execute(delete_query)
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+
+        return True
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+
+def insert_into_orders(table, email, order_id):
+    try:
+        # Connect to the database
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+
+        # Select rows from shopping_cart based on the provided email
+        select_query = f"SELECT item_id, quantity, email FROM {table} WHERE email = '{email}'"
+        cursor.execute(select_query)
+        rows_to_insert = cursor.fetchall()
+
+        # Insert selected rows into the orders table with the specified order_id
+        for row in rows_to_insert:
+            item_id, quantity, _ = row  # Extract values from the row
+            insert_query = f"INSERT INTO orders (order_id, item_id, quantity, email) VALUES ({order_id}, {item_id}, {quantity}, '{email}')"
+            cursor.execute(insert_query)
+
+        # Delete the selected rows from the shopping_cart table
+        delete_query = f"DELETE FROM {table} WHERE email = '{email}'"
+        cursor.execute(delete_query)
+
+        # Commit the changes and close the connection
+        connection.commit()
+        cursor.close()
+        connection.close()
+
+        print(f"Rows inserted into 'orders' table and removed from '{table}' successfully.")
+    except Exception as e:
+        print(f"Error: {e}")
