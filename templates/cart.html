@@ -75,7 +75,7 @@
     <ul>
         {% for item in items %}
             <li>
-                <strong>{{ item[5] }}</strong> - {{ item[2] }} USD<br>
+                <strong>{{ item[4] }}</strong> - {{ item[2] }} USD<br>
                 Quantity: {{ item[3] }}
                 <a href="{{ url_for('decrease_item', item_id=item[1]) }}"><strong style="color: red;">-</strong></a>
                 <a href="{{ url_for('increase_item', item_id=item[1]) }}"><strong style="color: green;">+</strong></a>
