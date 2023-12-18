@@ -49,7 +49,7 @@
                 <div class="item">
                     <img src={{product[8]}} alt="Image Description">
                     <p> {{ product[0] + " " + product[1] + " " + product[7]  }}</p>
-                    <a onclick="added()" href="{{ url_for('add_item', item_id=product[0]) }}" class="button">Add</a>
+                    <a onclick="added()" href="{{ url_for('add_item', item_id=product[1], price=product[2], quantity=product[3], name=product[4], email=product[5]) }}" class="button">Add</a>
                     
                 </div>
             {% endfor %}
