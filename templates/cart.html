@@ -75,8 +75,8 @@
     <ul>
         {% for item in items %}
             <li>
-                <strong>{{ item[4] }}</strong> - {{ item[2] }} USD<br>
-                Quantity: {{ item[3] }}
+                <strong>{{ item[5] }}{{ item[6] }}</strong> - {{ item[2] }} USD<br>
+                Quantity: {{ item[2] }}
                 <a href="{{ url_for('decrease_item', item_id=item[1]) }}"><strong style="color: red;">-</strong></a>
                 <a href="{{ url_for('increase_item', item_id=item[1]) }}"><strong style="color: green;">+</strong></a>
                 <a href="{{ url_for('remove_item', item_id=item[1]) }}" class="button" style="color: white; background-color: red;">Remove</a>
