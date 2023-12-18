@@ -112,7 +112,7 @@ def remove_item(item_id):
 def proceed_to_payment():
     # Add logic to handle the payment process
     # (you need to implement this part based on your payment flow)
-    return "Proceeding to payment..."
+    return render_template('payment_page.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
