@@ -25,6 +25,7 @@ body {
     height: 90px;
     margin-bottom: 60px;
     margin-left: 604px;
+    z-index: 1;
 }
 
 .search-box input {
@@ -98,6 +99,7 @@ body {
     font-family:'Segoe UI', sans-serif;
     font-weight: bold;
     position: relative;
+    z-index: 1;
 }
 
 .sections span::after {
@@ -129,3 +131,89 @@ body {
     margin-left: 1824px;
 }
 
+.modal-container {
+    position: fixed;
+    top: 10;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start; /* Align to the top */
+    justify-content: center;
+    z-index: 1000;
+    transition: height 0.9s ease-out; /* Animation transition */
+}
+
+.modal {
+    width: 100%;
+    background-color: white;
+    padding: 0px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    overflow: auto;
+}
+
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 46px;
+    font-size: 40px;
+    color: rgb(80, 80, 80);
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.close-button:hover {
+    color: #ccc;
+}
+
+body.modal-open {
+    overflow: hidden; /* Prevent scrolling in the background */
+}
+
+.modal-open::before {
+    content: "";
+    position: fixed;
+    top: 150px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Adjust the last value for darkness */
+    z-index: 999; /* Ensure it's above other content */
+}
+
+.modal-title {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: rgb(70, 70, 70); 
+    margin-left: 40px;
+}
+
+.category-row {
+    display:grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-content:space-between;
+}
+
+.category-item {
+    width: 2%;
+    margin-left: 50px;
+    margin-right: 250px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    height: 50px;
+    text-align: left;   
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 18px;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+}
+
+.category-item:hover {
+    text-decoration: underline;
+    color: #000000;
+}
