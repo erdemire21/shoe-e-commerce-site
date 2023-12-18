@@ -49,13 +49,13 @@ app = Flask(_name_)
 
 # Assuming you have db_config defined somewhere with your MySQL database configuration
 
-@app.route('/add_item/<int:item_id>/<float:price>/<int:quantity>/<string:name>/<string:email>')
-def add_item(item_id, price, quantity, name, email):
+@app.route('/add_item/<int:item_id>/<float:price>/<int:quantity>/<string:brand>/<string:model>/<string:email>')
+def add_item(item_id, price, quantity, brand, model, email):
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor()
 
-    add_query = "INSERT INTO shopping_cart (item_id, Price, Quantity, Name, email) VALUES (%s, %s, %s, %s, %s);"
-    cursor.execute(add_query, (item_id, price, quantity, name, email))
+    add_query = "INSERT INTO shopping_cart (item_id, Price, Quantity, brand, model, email) VALUES (%s, %s, %s, %s, %s, %s);"
+    cursor.execute(add_query, (item_id, price, quantity, brand, model, email))
 
     connection.commit()
 
