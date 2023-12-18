@@ -67,7 +67,7 @@ def add_item(item_id, price, quantity, email, brand, model):
     else:
         # If the item does not exist, insert a new row
         add_query = "INSERT INTO shopping_cart (item_id, Price, Quantity, email, brand, model) VALUES (%s, %s, %s, %s, %s, %s);"
-        cursor.execute(add_query, (item_id, price, quantity, email, brand, model))
+        cursor.execute(add_query, (item_id, price, quantity, email, brand, model,))
         connection.commit()
     
 
