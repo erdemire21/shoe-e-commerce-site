@@ -130,3 +130,20 @@ def insert_private_info(address, card_name, card_number, expiration_date, cvv,em
 
     conn.commit()
     conn.close()
+
+def get_items(query = "SELECT * FROM Shopping_cart"):
+    try:
+
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+
+        cursor.execute(query)
+        items = cursor.fetchall()
+
+        cursor.close()
+        connection.close()
+
+        return items
+
+    except Exception as e:
+        return []
