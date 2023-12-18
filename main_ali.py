@@ -49,8 +49,8 @@ app = Flask(_name_)
 
 # Assuming you have db_config defined somewhere with your MySQL database configuration
 
-@app.route('/add_item/<int:item_id>/<float:price>/<int:quantity>/<string:brand>/<string:model>/<string:email>')
-def add_item(item_id, price, quantity, brand, model, email):
+@app.route('/add_item/<int:item_id>/<float:price>/<int:quantity>/<string:email>/<string:brand>/<string:model>')
+def add_item(item_id, price, quantity, email, brand, model):
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor()
 
@@ -66,8 +66,8 @@ def add_item(item_id, price, quantity, brand, model, email):
         connection.commit()
     else:
         # If the item does not exist, insert a new row
-        add_query = "INSERT INTO shopping_cart (item_id, Price, Quantity, brand, model, email) VALUES (%s, %s, %s, %s, %s, %s);"
-        cursor.execute(add_query, (item_id, price, quantity, brand, model, email))
+        add_query = "INSERT INTO shopping_cart (item_id, Price, Quantity, email, brand, model) VALUES (%s, %s, %s, %s, %s, %s);"
+        cursor.execute(add_query, (item_id, price, quantity, email, brand, model))
         connection.commit()
     
 
