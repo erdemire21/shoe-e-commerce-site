@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Item Display</title>
     <link rel="stylesheet" type="text/css" href="../static/style_listing.css">
+
 </head>
 <body>
     <div class="header">
@@ -36,26 +37,26 @@
         </div>
     
     </div>
+    <script>
+        function added(){
+            alert('Item Added Successfully!');
+        }
+    </script>
+
     <div id="item-container">
         {% if products %}
-            {% for item in products %}
+            {% for product in products %}
                 <div class="item">
-                    <p>  
-                        Model: {{ item['Model'] }}
-                        Type: {{ item['Type'] }}
-                        Gender: {{ item['Gender'] }}
-                        Size: {{ item['Size'] }} 
-                        Color: {{ item['Color'] }} 
-                        Price: {{ item['Price'] }}</p>
+                    <img src={{product[8]}} alt="Image Description">
+                    <p> {{ product[0] + " " + product[1] + " " + product[7]  }}</p>
+                    <a onclick="added()" href="{{ url_for('add_item', item_id=product[0]) }}" class="button">Add</a>
                     
-
                 </div>
             {% endfor %}
         {% else %}
             <p>No items found.</p>
         {% endif %}
     </div>
-
     
 </body>
 </html>
