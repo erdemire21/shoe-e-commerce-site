@@ -27,16 +27,25 @@
         <div class="line"></div>
 
         <div class="sections">
-            <span>MEN</span>
-            <span>WOMEN</span>
-            <span>BRANDS</span>
+            <span onclick="openWindow('men')">MEN</span>
+            <span onclick="openWindow('women')">WOMEN</span>
+            <span onclick="openWindow('brands')">BRANDS</span>
         </div>
 
         <div class="cart-button">
-            <img src="images/cart.png" alt="Shopping Cart" id="cart-button">
+            <a href="cart/cart.html" id="cart-link">
+                <img src="images/cart.png" alt="Shopping Cart" id="cart-button">
+            </a>
         </div>
     
     </div>
+
+    <div id="content-container">
+        <div class="modal-container" id="modal-container">
+        </div>
+    </div>
+    
+    <script src="windowscript.js"></script>
 
 </body>
 
