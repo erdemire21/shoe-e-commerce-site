@@ -2,33 +2,19 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import mysql.connector
 from mysql.connector import Error
 from utilization import *
+import random
 
 app = Flask(__name__)
-app.secret_key = '111'
+# Basically resets the cookie every time the server is restarted
+key = random.randint(1, 1000000000)
+key = str(key)
+app.secret_key = key
 
 
-db_config = {
-    'host': 'localhost',
-    'database': 'login',
-    'user': 'root',
-    'password': 'E19741453'
-}
-
-
-products = {
-    'product1': {
-        'name': 'Product 1',
-        'price': 10.0,
-    },
-    'product2': {
-        'name': 'Product 2',
-        'price': 15.0,
-    },
-}
 
 @app.route('/')
-def browse_items():
-    return render_template('index.html', products=products)
+def main_page():
+    return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -61,7 +47,7 @@ def browse2():
     if 'email' in session:
         return render_template('browse2.html', email=session['email'])
     else:
-        return redirect(url_for('login'))
+        return redirect(url_for('main_page'))
 
 
 
@@ -96,5 +82,7 @@ def payment_success():
 @app.route('/payment_fail')
 def payment_fail():
     return render_template('payment_fail.html')
+
+
 
 app.run(debug=True)
