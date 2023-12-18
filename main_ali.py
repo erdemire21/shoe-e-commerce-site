@@ -50,7 +50,7 @@ app = Flask(_name_)
 # Assuming you have db_config defined somewhere with your MySQL database configuration
 
 @app.route('/add_item/<int:item_id>/<float:price>/<int:quantity>/<string:name>/<string:email>')
-def add_item(item_id, price, quantity, status, name, email):
+def add_item(item_id, price, quantity, name, email):
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor()
 
