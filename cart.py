@@ -19,7 +19,7 @@ def get_items():
         cursor = connection.cursor()
 
         # Fetch data from the table (replace 'your_table' with your actual table name)
-        query = "SELECT * FROM Shopping_cart"             # cart current
+        query = "SELECT * FROM shopping_cart"             # cart current
         cursor.execute(query)
         items = cursor.fetchall()
 
@@ -47,17 +47,17 @@ def decrease_item(item_id):
     cursor = connection.cursor()
 
     # Decrease quantity for the specified item_id
-    update_query = "UPDATE Shopping_cart SET quantity = quantity - 1 WHERE item_id = %s"
+    update_query = "UPDATE shopping_cart SET quantity = quantity - 1 WHERE item_id = %s"
     cursor.execute(update_query, (item_id,))
     connection.commit()
 
     # Check if quantity is zero, then remove the row
-    check_quantity_query = "SELECT quantity FROM Shopping_cart WHERE item_id = %s"
+    check_quantity_query = "SELECT quantity FROM shopping_cart WHERE item_id = %s"
     cursor.execute(check_quantity_query, (item_id,))
     quantity = cursor.fetchone()[0]
 
     if quantity == 0:
-        delete_query = "DELETE FROM Shopping_cart WHERE item_id = %s"
+        delete_query = "DELETE FROM shopping_cart WHERE item_id = %s"
         cursor.execute(delete_query, (item_id,))
         connection.commit()
 
@@ -77,7 +77,7 @@ def increase_item(item_id):
     cursor = connection.cursor()
     
     # Increase quantity for the specified item_id
-    update_query = "UPDATE Shopping_cart SET quantity = quantity + 1 WHERE item_id = %s"
+    update_query = "UPDATE shopping_cart SET quantity = quantity + 1 WHERE item_id = %s"
     cursor.execute(update_query, (item_id,))
     connection.commit()
 
@@ -96,7 +96,7 @@ def remove_item(item_id):
     cursor = connection.cursor()
     
     #Remove row for the specified item_id
-    remove_query = "DELETE FROM Shopping_cart WHERE item_id = %s"
+    remove_query = "DELETE FROM shopping_cart WHERE item_id = %s"
     cursor.execute(remove_query, (item_id,))
     connection.commit()
     
