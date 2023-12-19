@@ -20,11 +20,21 @@ current_email = "t@t.com"
 userId = 1
 product = get_all_shoes()
 
-order_type = request.form.get('order')                  #new sorting
-if order_type=descent:
-    product = descent_get_shoes() 
-if order_type=ascent:
-    product = ascent_get_shoes()                   #new sorting
+product = process_order()                                      # new for sorting
+
+
+@app.route('/process_order', methods=['POST'])                 # new function for sorting
+def process_order():
+    order_type = request.form.get('order')
+    
+    if else order_type="Desc":
+        product = descent_get_shoes() 
+        return product
+    if else order_type="Asc":
+        product = ascent_get_shoes()                   
+        return product
+    else:
+        return get_all_shoes()                              #new sorting
 
 order = get_orders(current_email)
 
