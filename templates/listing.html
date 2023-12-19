@@ -42,12 +42,41 @@
             alert('Item Added Successfully!');
         }
     </script>
-    <label for="mySelect">Sorting Option</label>
-    <select id="mySelect" name="mySelect">
-        <option value="Normal">Normal</option>
-        <option value="desc">Descending</option>
-        <option value="asc">Ascending</option>
-    </select>
+    <form action="/process" method="post">
+        <label for="option">Choose an option:</label>
+        <select name="option" id="option">
+            <option value="Normal">Normal </option>
+            <option value="Desc">Descending</option>
+            <option value="Asc">Ascending</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+
+    <form action="/process" method="post">
+        <label for="option">Choose an gender option:</label>
+        <select name="option" id="option">
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+    
+    <form action="/process" method="post">
+        <label for="option">Choose an brand option:</label>
+        <select name="option" id="option">
+            <option value="Adidas">Adidas </option>
+            <option value="Asics">Asics </option>
+            <option value="Converse">Converse  </option>
+            <option value="Fila">Fila </option>
+            <option value="New Balance">New Balance </option>
+            <option value="Nike">Nike</option>
+            <option value="Puma">Puma </option>
+            <option value="Reebok">Reebok</option>
+            <option value="Skechers">Skechers </option>
+            <option value="Vans">Vans</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
 
     
     <div id="item-container">
