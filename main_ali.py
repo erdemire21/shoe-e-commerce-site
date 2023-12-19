@@ -20,6 +20,12 @@ current_email = "t@t.com"
 userId = 1
 product = get_all_shoes()
 
+order_type = request.form.get('order')                  #new
+if order_type=descent:
+    product = descent_get_shoe() 
+if order_type=ascent:
+    product = ascent_get_shoe()                   #new
+
 order = get_orders(current_email)
 
 @app.route('/')
