@@ -44,6 +44,7 @@ def add_item():
     email = current_email
     brand = request.form.get('brand')
     model = request.form.get('model')
+    url = request.form.get('url')
 
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor()
@@ -62,8 +63,8 @@ def add_item():
         connection.commit()
     else:
         # If the item does not exist, insert a new row
-        add_query = "INSERT INTO shopping_cart (item_id, Price, Quantity, email, brand, model) VALUES (%s, %s, %s, %s, %s, %s);"
-        cursor.execute(add_query, (item_id, price, quantity, email, brand, model,))
+        add_query = "INSERT INTO shopping_cart (item_id, Price, Quantity, email, brand, model, url) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+        cursor.execute(add_query, (item_id, price, quantity, email, brand, model, url,))
         connection.commit()
 
     cursor.close()
