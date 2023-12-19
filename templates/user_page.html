@@ -40,32 +40,24 @@
     <div class="user-info">
         <h2>User Information</h2>
         <ul>
-            <li><strong>User Name:</strong> name</li>
+            <li><strong>User Name:</strong> {{email}}</li>
             <li><strong>User Address:</strong> adress</li>
         </ul>
+        <a href="{{ url_for('login') }}"><button>Log Out</button></a>
     </div>
 
-    <div class="order-table">
-        <h2>Orders</h2>
-        <table>
-    <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Order Cost</th>
-            <th>Order Date</th>
-            <th>Value</th>
-        </tr>
-    </thead>
-    <tbody>
+    <h1 class="order-h">Your Past Orders</h1>
+    <div class="item-container">
         {% for order in orders %}
-        <tr>
-            <td>{{ order[0] }}</td>
-            <td>{{ order[1] }}</td>
-            <td>{{ order[2] }}</td>
-            <td>{{ order[4] }}</td>
-        </tr>
+            
+            <div class="order">
+                <img src={{order[0][0][9]}} alt="Image Description">
+                <p>Your order: {{order[0][0][1] + " " + order[0][0][2] + " " + order[0][0][8]}}</p>
+                <p>Quantity: {{order[1]}}</p>
+                
+            </div>
         {% endfor %}
-    </tbody>
+    </div>
 </table>
     </div>
 </body>
