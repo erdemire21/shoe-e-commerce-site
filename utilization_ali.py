@@ -31,6 +31,28 @@ def get_all_shoes():
 
 
 
+def descent_get_shoes():
+    # Use a context manager for the cursor
+    try:
+        connection = mysql.connector.connect(**db_config)
+
+        with connection.cursor() as cursor:
+            display_all = "SELECT item_id, Brand, Model, Type, Gender, Size, Color, Material, Price, Image_URL FROM shoe_info ORDER BY CAST(SUBSTRING(Price, 2) AS SIGNED) DESC;"
+            cursor.execute(display_all)
+            shoes = cursor.fetchall()
+
+        # The connection will be closed automatically when exiting the 'with' block
+
+        return shoes
+
+    except mysql.connector.Error as err:
+        # Handle database errors
+        print(f"Error: {err}")
+        return None
+
+
+
+
 def get_orders(email):
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor()
