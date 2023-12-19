@@ -15,7 +15,7 @@ def get_all_shoes():
         connection = mysql.connector.connect(**db_config)
 
         with connection.cursor() as cursor:
-            display_all = "SELECT Brand, Model, Type, Gender, Size, Color, Material, Price, Image_URL FROM shoe_info;"
+            display_all = "SELECT item_id, Brand, Model, Type, Gender, Size, Color, Material, Price, Image_URL FROM shoe_info;"
             cursor.execute(display_all)
             shoes = cursor.fetchall()
 
@@ -40,6 +40,5 @@ def get_orders(email):
     connection.close()
 
     return orders
-
 
 
