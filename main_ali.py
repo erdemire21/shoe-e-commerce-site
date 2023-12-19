@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import mysql.connector
 from mysql.connector import Error
-from utilization_ali.py import *
+from utilization_ali import *
 
 app = Flask(__name__)
 app.secret_key = "'111'"
