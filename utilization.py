@@ -249,3 +249,28 @@ def insert_into_orders(table, email, order_id):
         print(f"Rows inserted into 'orders' table and removed from '{table}' successfully.")
     except Exception as e:
         print(f"Error: {e}")
+        
+
+## Previous parts belonged to Emre Hakan Erdemir Now the next part belongs to Alihan Yalcin
+def get_orders_for_profile(email):
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor()
+    
+
+    u_orders = "SELECT item_id, quantity FROM  orders WHERE orders.email=%s;"
+
+    cursor.execute(u_orders, (email,))
+    orders = cursor.fetchall()
+    #order = order_id, item_id, quantity, mail, price
+
+    
+    products=[]
+    for order in orders:
+        item_id = order[0]
+        current_query = "SELECT item_id, Brand, Model, Type, Gender, Size, Color, Material, Price, Image_URL FROM shoe_info WHERE item_id=%s;"
+        cursor.execute(current_query, (item_id,))
+        product = cursor.fetchall()
+        products.append([product, order[1]])
+    cursor.close()
+    connection.close()
+    return products

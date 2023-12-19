@@ -37,16 +37,29 @@ def login():
 
         if authenticate_user(email, password):
             session['email'] = email  # Store the email in the session
-            return redirect(url_for('shopping_cart'))
+            return redirect(url_for('anasayfa_olcak'))
 
         return "Invalid email or password. Please try again."
 
     return render_template('login.html')
 
-@app.route('/browse2')
-def browse2():
-    if 'email' in session:
-        return render_template('browse2.html', email=session['email'])
+
+@app.route('/logout')
+def logout():
+    session['email'] = None
+    return redirect(url_for('main_page'))  # Change 'index' to the desired route
+
+@app.route('/anasayfa_olcak')
+def anasayfa_olcak():
+    return render_template('anasayfa_olcak.html')
+
+
+
+
+@app.route('/user_page')
+def user_page():
+    if 'email' in session and session['email'] != None:
+        return render_template('user_page.html', orders=get_orders_for_profile(session['email']), email=session['email'])
     else:
         return redirect(url_for('main_page'))
 
@@ -78,13 +91,6 @@ def payment_page():
             
             return redirect(url_for('payment_fail'))
 
-    # If it's a GET request, render the 'payment_page.html' template
-    # products = get_items_as_dictionary()
-    # total = sum(product['price'] * product['quantity'] for product in products)
-    # total_quantity = sum(product['quantity'] for product in products)
-
-    # return render_template('payment_page.html', products=products, total=total, total_quantity=total_quantity)
-    # return render_template('payment_page.html', products = get_items_as_dictionary(email = session['email']))
     items = get_items(email = session['email'])
     total_price = sum(item[1] * item[2] for item in items)
     return render_template('payment_page.html', items = get_items(email = session['email']), total_price = total_price)

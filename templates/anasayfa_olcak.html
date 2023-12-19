@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Website</title>
+</head>
+<body>
+    <form action="{{ url_for('user_page') }}" method="GET">
+        <button type="submit">Go to Profile</button>
+    </form>
+    <form action="{{ url_for('shopping_cart') }}" method="GET">
+        <button type="submit">Go to Shopping Cart</button>
+    </form>
+</body>
+</html>
