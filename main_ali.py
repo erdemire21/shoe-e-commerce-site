@@ -27,10 +27,10 @@ product = process_order()                                      # new for sorting
 def process_order():
     order_type = request.form.get('order')
     
-    if else order_type="Desc":
+    if order_type="Desc":
         product = descent_get_shoes() 
         return product
-    if else order_type="Asc":
+    elif order_type="Asc":
         product = ascent_get_shoes()                   
         return product
     else:
