@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import mysql.connector
 from mysql.connector import Error
-from util_ismail import *
+from utilization_ali.py import *
 
 app = Flask(__name__)
 app.secret_key = "'111'"
@@ -18,36 +18,19 @@ cursor = connection.cursor()
 
 current_email = "t@t.com"
 userId = 1
-product = get_all_shoes()
-
-product = process_order()                                      # new for sorting
 
 
-@app.route('/process_order', methods=['POST'])                 # new function for sorting
-def process_order():
-    order_type = request.form.get('order')
-    
-    if order_type="Desc":
-        product = descent_get_shoes() 
-        return product
-    elif order_type="Asc":
-        product = ascent_get_shoes()                   
-        return product
-    else:
-        return get_all_shoes()                              #new sorting
-
-order = get_orders(current_email)
 
 @app.route('/')
 def browse_items():
-    return render_template('deneme.html', products=product, mail=current_email)
+    return render_template('listing.html', products=get_all_shoes(), mail=current_email)
 
 
 
 
 @app.route('/user_page')
 def user_page():
-    return render_template('user_page.html', orders=order, email=current_email)
+    return render_template('user_page.html', orders=get_orders(current_email), email=current_email)
 
 
 # Assuming you have db_config defined somewhere with your MySQL database configuration
@@ -85,7 +68,7 @@ def add_item():
 
     cursor.close()
     connection.close()
-    return render_template('deneme.html', products=product, mail=current_email)  
+    return render_template('listing.html', products=get_all_shoes(), mail=current_email)  
 
     
 @app.route('/login')
