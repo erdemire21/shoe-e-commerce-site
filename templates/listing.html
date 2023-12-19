@@ -42,7 +42,14 @@
             alert('Item Added Successfully!');
         }
     </script>
+    <label for="mySelect">Sorting Option</label>
+    <select id="mySelect" name="mySelect">
+        <option value="Normal">Normal</option>
+        <option value="desc">Descending</option>
+        <option value="asc">Ascending</option>
+    </select>
 
+    
     <div id="item-container">
         {% if products %}
             {% for product in products %}
