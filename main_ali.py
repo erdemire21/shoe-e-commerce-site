@@ -23,9 +23,29 @@ userId = 1
 
 @app.route('/')
 def browse_items():
-    return render_template('listing.html', products=get_all_shoes(), mail=current_email)
+    chosen_option = session.get('chosen_option', None)
+    if chosen_option == None:
+        product = get_all_shoes()
+    elif chosen_option == "Desc":
+        product = descent_get_shoes()
+    elif chosen_option == "Normal":
+        product = get_all_shoes()
+    elif chosen_option == "Asc":
+        product = ascent_get_shoes()
 
+    elif chosen_option == "Men":
+        product = get_men_shoes()
+    elif chosen_option == "Women":
+        product = get_women_shoes()
+    else:
+        product = get_brand_shoes(chosen_option)
+    return render_template('deneme.html', products=product, mail=current_email)
 
+@app.route('/process', methods=['POST'])
+def process():
+    chosen_option = request.form.get('option')
+    session['chosen_option'] = chosen_option
+    return redirect(url_for('browse_items'))
 
 
 @app.route('/user_page')
@@ -37,6 +57,23 @@ def user_page():
 
 @app.route('/add_item', methods=['POST'])
 def add_item():
+    chosen_option = session.get('chosen_option', None)
+    if chosen_option == None:
+        product = get_all_shoes()
+    elif chosen_option == "Desc":
+        product = descent_get_shoes()
+    elif chosen_option == "Normal":
+        product = get_all_shoes()
+    elif chosen_option == "Asc":
+        product = ascent_get_shoes()
+
+    elif chosen_option == "Men":
+        product = get_men_shoes()
+    elif chosen_option == "Women":
+        product = get_women_shoes()
+    else:
+        product = get_brand_shoes(chosen_option)
+        
     item_id = request.form.get('item_id')
     price = request.form.get('price')
     price = float(str(price[1:]))
@@ -44,7 +81,6 @@ def add_item():
     email = current_email
     brand = request.form.get('brand')
     model = request.form.get('model')
-    url = request.form.get('url')
 
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor()
@@ -63,13 +99,13 @@ def add_item():
         connection.commit()
     else:
         # If the item does not exist, insert a new row
-        add_query = "INSERT INTO shopping_cart (item_id, Price, Quantity, email, brand, model, url) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-        cursor.execute(add_query, (item_id, price, quantity, email, brand, model, url,))
+        add_query = "INSERT INTO shopping_cart (item_id, Price, Quantity, email, brand, model) VALUES (%s, %s, %s, %s, %s, %s);"
+        cursor.execute(add_query, (item_id, price, quantity, email, brand, model,))
         connection.commit()
 
     cursor.close()
     connection.close()
-    return render_template('listing.html', products=get_all_shoes(), mail=current_email)  
+    return render_template('deneme.html', products=product, mail=current_email)  
 
     
 @app.route('/login')
