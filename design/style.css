@@ -151,6 +151,7 @@ body {
     padding: 0px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     overflow: auto;
+    z-index: 1001;
 }
 
 .close-button {
@@ -160,7 +161,7 @@ body {
     font-size: 40px;
     color: rgb(80, 80, 80);
     cursor: pointer;
-    z-index: 1001;
+    z-index: 1002;
 }
 
 .close-button:hover {
@@ -168,7 +169,7 @@ body {
 }
 
 body.modal-open {
-    overflow: hidden; /* Prevent scrolling in the background */
+    overflow:hidden; /* Prevent scrolling in the background */
 }
 
 .modal-open::before {
