@@ -31,7 +31,7 @@ def browse_items():
 
 @app.route('/user_page')
 def user_page():
-    return render_template('user_page.html', orders=order)
+    return render_template('user_page.html', orders=order, email=current_email)
 
 
 # Assuming you have db_config defined somewhere with your MySQL database configuration
