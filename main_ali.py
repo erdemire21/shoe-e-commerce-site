@@ -4,7 +4,7 @@ from mysql.connector import Error
 from util_ismail import *
 
 app = Flask(__name__)
-app.secret_key = '111'
+app.secret_key = "'111'"
 
 
 db_config ={
@@ -16,15 +16,15 @@ db_config ={
 connection = mysql.connector.connect(**db_config)
 cursor = connection.cursor()
 
-email = "'t@t.com'"
+current_email = "t@t.com"
 userId = 1
 product = get_all_shoes()
 
-order = get_orders(email)
+order = get_orders(current_email)
 
 @app.route('/')
 def browse_items():
-    return render_template('deneme.html', products=product)
+    return render_template('deneme.html', products=product, mail=current_email)
 
 
 
@@ -41,8 +41,8 @@ def add_item():
     item_id = request.form.get('item_id')
     price = request.form.get('price')
     price = float(str(price[1:]))
-    quantity = request.form.get('quantity')
-    email = request.form.get('email')
+    quantity = 1
+    email = current_email
     brand = request.form.get('brand')
     model = request.form.get('model')
 
@@ -69,7 +69,10 @@ def add_item():
 
     cursor.close()
     connection.close()
-    return render_template('deneme.html', products=product)  
+    return render_template('deneme.html', products=product, mail=current_email)  
 
     
+@app.route('/login')
+def login():
+    return render_template('login.html')
 app.run(debug=True)
