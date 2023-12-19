@@ -32,13 +32,14 @@ def get_orders(email):
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor()
 
-    u_orders = "SELECT * FROM  orders WHERE orders.email="+email+";"
-    cursor.execute(u_orders)
+    u_orders = "SELECT * FROM  orders WHERE orders.email=%s;"
+    cursor.execute(u_orders, (email,))
     orders = cursor.fetchall()
 
     cursor.close()
     connection.close()
 
     return orders
+
 
 
