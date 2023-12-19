@@ -22,9 +22,9 @@ product = get_all_shoes()
 
 order_type = request.form.get('order')                  #new sorting
 if order_type=descent:
-    product = descent_get_shoe() 
+    product = descent_get_shoes() 
 if order_type=ascent:
-    product = ascent_get_shoe()                   #new sorting
+    product = ascent_get_shoes()                   #new sorting
 
 order = get_orders(current_email)
 
