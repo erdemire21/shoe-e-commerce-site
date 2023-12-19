@@ -47,11 +47,11 @@
         {% if products %}
             {% for product in products %}
                 <div class="item">
-                    <img src={{product[8]}} alt="Image Description">
-                    <p> {{ product[0] + " " + product[1] + " " + product[7]  }}</p>
+                    <img src={{product[9]}} alt="Image Description">
+                    <p> {{ product[1] + " " + product[2] + " " + product[8]  }}</p>
                     <form method="POST" action="{{ url_for('add_item') }}">
                         <input type="number" name="item_id" value="{{ product[0] }}" hidden>
-                        <input type="number" name="price" value="{{ product[8] }}" hidden>
+                        <input type="text" name="price" value="{{ product[8] }}" hidden>
                         <input type="number" name="quantity" value="1" hidden>
                         <input type="text" name="email" value="t@t.com" hidden>
                         <input type="text" name="brand" value="{{ product[1] }}" hidden>
