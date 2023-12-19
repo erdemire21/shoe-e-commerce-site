@@ -49,8 +49,15 @@ app = Flask(_name_)
 
 # Assuming you have db_config defined somewhere with your MySQL database configuration
 
-@app.route('/add_item/<int:item_id>/<float:price>/<int:quantity>/<string:email>/<string:brand>/<string:model>')
-def add_item(item_id, price, quantity, email, brand, model):
+@app.route('/add_item', methods=['POST'])
+def add_item():
+    item_id = request.form.get('item_id')
+    price = request.form.get('price')
+    quantity = request.form.get('quantity')
+    email = request.form.get('email')
+    brand = request.form.get('brand')
+    model = request.form.get('model')
+
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor()
 
@@ -69,11 +76,10 @@ def add_item(item_id, price, quantity, email, brand, model):
         add_query = "INSERT INTO shopping_cart (item_id, Price, Quantity, email, brand, model) VALUES (%s, %s, %s, %s, %s, %s);"
         cursor.execute(add_query, (item_id, price, quantity, email, brand, model,))
         connection.commit()
-    
 
     cursor.close()
     connection.close()
-    return render_template('listing.html', products=product)
+    return render_template('listing.html', products=product)  
 
     
 @app.route('/add_to_database', methods=['POST'])
