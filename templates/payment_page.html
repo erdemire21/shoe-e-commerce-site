@@ -5,13 +5,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Form</title>
-    <link rel="stylesheet" href="../static/payment_page.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .payment-form {
+            display: flex;
+            max-width: 800px;
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+
+        .left-side,
+        .right-side {
+            padding: 20px;
+        }
+
+        .left-side {
+            flex: 70%;
+        }
+
+        .right-side {
+            flex: 30%;
+            background-color: #f0f0f0;
+        }
+
+        .separator {
+            border-right: 1px solid #ccc;
+        }
+
+        .make-payment-button {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body>
-    <header>
-        <iframe src="banner.html" width="100%" height="100%" frameborder="0"></iframe>
-    </header>
 
     <form class="payment-form" action="/payment_page" method="post">
 
