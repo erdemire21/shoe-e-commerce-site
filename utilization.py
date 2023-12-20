@@ -392,3 +392,22 @@ def get_brand_shoes(brand):
         # Handle database errors
         print(f"Error: {err}")
         return None
+
+
+def get_adress(email):
+    try:
+        connection = mysql.connector.connect(**db_config)
+
+        with connection.cursor(buffered=True) as cursor:
+            display_all = "SELECT address FROM user_private_info WHERE email=%s;"
+            cursor.execute(display_all, (email,))
+            address = cursor.fetchone()
+            if address:
+                return address[0]
+            else:
+                return "No Recorded Address"
+
+    except mysql.connector.Error as err:
+        # Handle database errors
+        print(f"Error: {err}")
+        return None
