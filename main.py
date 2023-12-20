@@ -59,7 +59,7 @@ def anasayfa():
 @app.route('/user_page')
 def user_page():
     if 'email' in session and session['email'] != None:
-        return render_template('user_page.html', orders=get_orders_for_profile(session['email']), email=session['email'])
+        return render_template('user_page.html', orders=get_orders_for_profile(session['email']), email=session['email'], address=get_address(session['email']))
     else:
         return redirect(url_for('main_page'))
 
