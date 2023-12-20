@@ -394,7 +394,7 @@ def get_brand_shoes(brand):
         return None
 
 
-def get_adress(email):
+def get_address(email):
     try:
         connection = mysql.connector.connect(**db_config)
 
