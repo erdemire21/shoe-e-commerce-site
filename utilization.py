@@ -10,20 +10,6 @@ db_config = {
 }
 
 def add_user_to_database(username, email, password):
-    """
-    Add a new user to the database.
-
-    Args:
-        username (str): The username of the new user.
-        email (str): The email of the new user.
-        password (str): The password of the new user.
-
-    Returns:
-        str: A message indicating the result of the registration process.
-
-    Raises:
-        Error: If there is an error during the database operation.
-    """
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
@@ -53,16 +39,6 @@ def add_user_to_database(username, email, password):
 
 
 def authenticate_user(email, password):
-    """
-    Authenticates a user by checking their email and password against the database.
-
-    Args:
-        email (str): The email of the user.
-        password (str): The password of the user.
-
-    Returns:
-        bool: True if the user is authenticated, False otherwise.
-    """
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
@@ -88,15 +64,6 @@ def authenticate_user(email, password):
 
 
 def is_valid_credit_card(card_number):
-    """
-    Check if a credit card number is valid.
-    Example working card numbers: 5555555555554444
-    Args:
-        card_number (str): The credit card number to be validated.
-
-    Returns:
-        bool: True if the credit card number is valid, False otherwise.
-    """
     # Remove spaces and reverse the card number
     card_number = card_number.replace(" ", "")[::-1]
 
@@ -135,16 +102,6 @@ def insert_private_info(address, card_name, card_number, expiration_date, cvv,em
 
 
 def get_items(email):
-    """
-    Retrieve items from the Shopping_cart table based on the provided query.
-
-    Args:
-        query (str): The SQL query to execute (default is "SELECT * FROM Shopping_cart").
-
-    Returns:
-        list: A list of items retrieved from the database.
-
-    """
     query = f"SELECT * FROM shopping_cart_with_product_names WHERE email = '{email}'"
     try:
         connection = mysql.connector.connect(**db_config)
@@ -158,23 +115,12 @@ def get_items(email):
 
         return items
 
-        # products = [{"name": product[5], "price": product[2]} for product in items]
-        # return products
+        
     except Exception as e:
         return {}
 
 
 def get_items_as_dictionary(email):
-    """
-    Retrieve items from the Shopping_cart table based on the provided query.
-
-    Args:
-        query (str): The SQL query to execute (default is "SELECT * FROM Shopping_cart").
-
-    Returns:
-        list: A list of items retrieved from the database.
-
-    """
     query = f"SELECT * FROM shopping_cart_with_product_names WHERE email = '{email}'"
     try:
         connection = mysql.connector.connect(**db_config)
@@ -193,15 +139,7 @@ def get_items_as_dictionary(email):
     
 
 def delete_items_by_email_from_shopping_cart(email):
-    """
-    Delete all entries in the Shopping_cart table where the email column has the specified value.
 
-    Args:
-        email (str): The email value to match for deletion.
-
-    Returns:
-        bool: True if the deletion is successful, False otherwise.
-    """
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()

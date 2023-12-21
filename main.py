@@ -102,8 +102,6 @@ def payment_success():
 def payment_fail():
     return render_template('payment_fail.html')
 
-
-##### New Code #####
 @app.route('/shopping_cart', methods=['GET', 'POST'])
 def shopping_cart():
     items = get_items(session['email'])
@@ -238,7 +236,6 @@ def add_item():
     cursor = connection.cursor()
 
     # Check if the item with the given item_id already exists
-    
     select_query = "SELECT quantity FROM shopping_cart WHERE item_id = %s"
     cursor.execute(select_query, (item_id,))
     quan = cursor.fetchone()
@@ -264,9 +261,6 @@ def process():
     chosen_option = request.form.get('option')
     session['chosen_option'] = chosen_option
     return redirect(url_for('listing'))
-
-
-##### End New Code #####
 
 
 
