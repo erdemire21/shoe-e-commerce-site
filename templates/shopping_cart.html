@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" type="text/css" href="../static/shopping_cart.css">
+</head>
+
+
+<body>
+    <div class="header">
+        <div class="logo">
+            <a href="/anasayfa">
+                <img src="../static/images/logo.png" alt="Logo">
+            </a>
+    
+        </div>
+        
+        <div class="search-box">
+            <input type="text" placeholder="Search" maxlength="50">
+            <img src="../static/images/search_icon.png" alt="Search Icon" class="search-icon">
+        </div>
+        
+        <div class="user-section">
+            <a href="/user_page" class="sign-in">Profile</a>
+            <img src="../static/images/user_icon.png" alt="User Icon">
+        </div>
+        
+        <div class="line"></div>
+    
+        <div class="cart-button">
+            <a href="/shopping_cart" id="cart-link">
+                <img src="../static/images/cart.png" alt="Shopping Cart" id="cart-button">
+            </a>
+        </div>
+    
+    </div>
+    <h1>My Cart</h1>
+<body>
+    <ul>
+        {% for item in items %}
+            <li>
+                <strong>{{ item[4] }}</strong> - {{ item[1] }} USD<br>
+                Quantity: {{ item[2] }}
+                <a href="{{ url_for('decrease_item', item_id=item[0]) }}"><strong style="color: rgb(0, 0, 0);">-</strong></a>
+                <a href="{{ url_for('increase_item', item_id=item[0]) }}"><strong style="color: rgb(0, 0, 0);">+</strong></a>
+                <a href="{{ url_for('remove_item', item_id=item[0]) }}" class="button" style="color: white; background-color: red;">Remove</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <p>Total Price: {{ total_price }} USD</p>
+    <form action="{{ url_for('payment_page') }}" method="GET">
+        <button type="submit">Proceed to Payment</button>
+    </form>
+</body>
+</html>

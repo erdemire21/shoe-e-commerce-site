@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+    <link rel="stylesheet" type="text/css" href="../static/style_listing.css">
+
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <a href="/anasayfa">
+                <img src="../static/images/logo.png" alt="Logo">
+            </a>
+    
+        </div>
+        
+        <div class="search-box">
+            <input type="text" placeholder="Search" maxlength="50">
+            <img src="../static/images/search_icon.png" alt="Search Icon" class="search-icon">
+        </div>
+        
+        <div class="user-section">
+            <a href="/user_page" class="sign-in">Profile</a>
+            <img src="../static/images/user_icon.png" alt="User Icon">
+        </div>
+        
+        <div class="line"></div>
+    
+        <div class="cart-button">
+            <a href="/shopping_cart" id="cart-link">
+                <img src="../static/images/cart.png" alt="Shopping Cart" id="cart-button">
+            </a>
+        </div>
+    
+    </div>
+    <div class="user-info">
+        <h2>User Information</h2>
+        <ul>
+            <li><strong>User Email:</strong> {{email}}</li>
+            <li><strong>User Address:</strong>{{adress}}</li>
+        </ul>
+        <a href="{{ url_for('logout') }}"><button>Log Out</button></a>
+    </div>
+
+    <h1 class="order-h">Your Past Orders</h1>
+    <div class="item-container">
+        {% for order in orders %}
+            
+            <div class="order">
+                <img src={{order[0][0][9]}} alt="Image Description">
+                <p>Your order: {{order[0][0][1] + " " + order[0][0][2] + " " + order[0][0][8]}}</p>
+                <p>Quantity: {{order[1]}}</p>
+                
+            </div>
+        {% endfor %}
+    </div>
+</table>
+    </div>
+</body>
+</html>

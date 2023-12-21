@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <link rel="stylesheet" href="../static/payment_page.css">
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">
+            <a href="/anasayfa">
+                <img src="../static/images/logo.png" alt="Logo">
+            </a>
+    
+        </div>
+        
+        <div class="search-box">
+            <input type="text" placeholder="Search" maxlength="50">
+            <img src="../static/images/search_icon.png" alt="Search Icon" class="search-icon">
+        </div>
+        
+        <div class="user-section">
+            <a href="/user_page" class="sign-in">Profile</a>
+            <img src="../static/images/user_icon.png" alt="User Icon">
+        </div>
+        
+        <div class="line"></div>
+    
+        <div class="cart-button">
+            <a href="/shopping_cart" id="cart-link">
+                <img src="../static/images/cart.png" alt="Shopping Cart" id="cart-button">
+            </a>
+        </div>
+    
+    </div>
+
+    <form class="payment-form" action="/payment_page" method="post">
+
+        <div class="left-side">
+            <h1>Payment Information</h1>
+
+            <div class="address">
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" rows="4" required></textarea>
+            </div>
+
+            <div class="credit-card">
+                <label for="card-name">Cardholder Name:</label>
+                <input type="text" id="card-name" name="card-name" required>
+
+                <label for="card-number">Card Number:</label>
+                <input type="text" id="card-number" name="card-number" required>
+
+                <div class="expiration-cvv">
+                    <div>
+                        <label for="expiration-date">Expiration Date:</label>
+                        <input type="text" id="expiration-date" name="expiration-date" placeholder="MM/YYYY" required>
+                    </div>
+                    <div>
+                        <label for="cvv">CVV:</label>
+                        <input type="text" id="cvv" name="cvv" required>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="right-side">
+            <h1>Order Summary</h1>
+
+            <input type="text" id="total" name="total" value="${{ total_price }}" readonly>
+
+
+            {% for item in items %}
+            <div class="product">
+                <p>{{ item[4] }}</p>
+                <p>Price: ${{ item[1] }}</p>
+                <p>Quantity: {{ item[2] }}</p>
+                <p>Total: ${{ item[1] * item[2] }}</p>
+            </div>
+            {% endfor %}
+
+            <form class="payment-form" action="{{ url_for('payment_page') }}" method="post">
+                <button type="submit" class="make-payment-button">Make Payment</button>
+            </form>
+    
+        </div>
+
+    </form>
+
+</body>
+
+</html>
