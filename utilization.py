@@ -3,9 +3,9 @@ from mysql.connector import Error
 
 db_config = {
     'host': 'sql11.freemysqlhosting.net',
-    'database': 'sql11670983',
-    'user': 'sql11670983',
-    'password': 'T7p8T65KtN',
+    'database': 'sql11672574',
+    'user': 'sql11672574',
+    'password': '6RUfjyQkQF',
     'port': 3306,
 }
 
