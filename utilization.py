@@ -252,6 +252,8 @@ def insert_into_orders(table, email, order_id):
         
 
 ## Previous parts belonged to Emre Hakan Erdemir Now the next part belongs to Alihan Yalcin
+##############
+##############
 def get_orders_for_profile(email):
     connection = mysql.connector.connect(**db_config)
     cursor = connection.cursor()
@@ -274,3 +276,138 @@ def get_orders_for_profile(email):
     cursor.close()
     connection.close()
     return products
+
+
+
+def descent_get_shoes():
+    # Use a context manager for the cursor
+    try:
+        connection = mysql.connector.connect(**db_config)
+
+        with connection.cursor() as cursor:
+            display_all = "SELECT item_id, Brand, Model, Type, Gender, Size, Color, Material, Price, Image_URL FROM shoe_info ORDER BY CAST(SUBSTRING(Price, 2) AS SIGNED) DESC;"
+            cursor.execute(display_all)
+            shoes = cursor.fetchall()
+
+        # The connection will be closed automatically when exiting the 'with' block
+
+        return shoes
+
+    except mysql.connector.Error as err:
+        # Handle database errors
+        print(f"Error: {err}")
+        return None
+
+
+
+def ascent_get_shoes():
+    # Use a context manager for the cursor
+    try:
+        connection = mysql.connector.connect(**db_config)
+
+        with connection.cursor() as cursor:
+            display_all = "SELECT item_id, Brand, Model, Type, Gender, Size, Color, Material, Price, Image_URL FROM shoe_info ORDER BY CAST(SUBSTRING(Price, 2) AS SIGNED) ASC;"
+            cursor.execute(display_all)
+            shoes = cursor.fetchall()
+
+        # The connection will be closed automatically when exiting the 'with' block
+
+        return shoes
+
+    except mysql.connector.Error as err:
+        # Handle database errors
+        print(f"Error: {err}")
+        return None
+
+def get_all_shoes():
+    # Use a context manager for the cursor
+    try:
+        connection = mysql.connector.connect(**db_config)
+
+        with connection.cursor() as cursor:
+            display_all = "SELECT item_id, Brand, Model, Type, Gender, Size, Color, Material, Price, Image_URL FROM shoe_info;"
+            cursor.execute(display_all)
+            shoes = cursor.fetchall()
+
+        # The connection will be closed automatically when exiting the 'with' block
+
+        return shoes
+
+    except mysql.connector.Error as err:
+        # Handle database errors
+        print(f"Error: {err}")
+        return None
+
+
+def get_men_shoes():
+    try:
+        connection = mysql.connector.connect(**db_config)
+
+        with connection.cursor() as cursor:
+            display_all = "SELECT item_id, Brand, Model, Type, Gender, Size, Color, Material, Price, Image_URL FROM shoe_info WHERE Gender='Men';"
+            cursor.execute(display_all)
+            shoes = cursor.fetchall()
+
+        # The connection will be closed automatically when exiting the 'with' block
+
+        return shoes
+
+    except mysql.connector.Error as err:
+        # Handle database errors
+        print(f"Error: {err}")
+        return None
+    
+def get_women_shoes():
+    try:
+        connection = mysql.connector.connect(**db_config)
+
+        with connection.cursor() as cursor:
+            display_all = "SELECT item_id, Brand, Model, Type, Gender, Size, Color, Material, Price, Image_URL FROM shoe_info WHERE Gender='Women';"
+            cursor.execute(display_all)
+            shoes = cursor.fetchall()
+
+        # The connection will be closed automatically when exiting the 'with' block
+
+        return shoes
+
+    except mysql.connector.Error as err:
+        # Handle database errors
+        print(f"Error: {err}")
+        return None
+    
+def get_brand_shoes(brand):
+    try:
+        connection = mysql.connector.connect(**db_config)
+
+        with connection.cursor() as cursor:
+            display_all = "SELECT item_id, Brand, Model, Type, Gender, Size, Color, Material, Price, Image_URL FROM shoe_info WHERE Brand=%s;"
+            cursor.execute(display_all, (brand,))
+            shoes = cursor.fetchall()
+
+        # The connection will be closed automatically when exiting the 'with' block
+
+        return shoes
+
+    except mysql.connector.Error as err:
+        # Handle database errors
+        print(f"Error: {err}")
+        return None
+
+
+def get_address(email):
+    try:
+        connection = mysql.connector.connect(**db_config)
+
+        with connection.cursor(buffered=True) as cursor:
+            display_all = "SELECT address FROM user_private_info WHERE email=%s;"
+            cursor.execute(display_all, (email,))
+            address = cursor.fetchone()
+            if address:
+                return address[0]
+            else:
+                return "No Recorded Address"
+
+    except mysql.connector.Error as err:
+        # Handle database errors
+        print(f"Error: {err}")
+        return None

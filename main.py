@@ -37,7 +37,7 @@ def login():
 
         if authenticate_user(email, password):
             session['email'] = email  # Store the email in the session
-            return redirect(url_for('anasayfa_olcak'))
+            return redirect(url_for('anasayfa'))
 
         return "Invalid email or password. Please try again."
 
@@ -49,9 +49,9 @@ def logout():
     session['email'] = None
     return redirect(url_for('main_page'))  # Change 'index' to the desired route
 
-@app.route('/anasayfa_olcak')
-def anasayfa_olcak():
-    return render_template('anasayfa_olcak.html')
+@app.route('/anasayfa')
+def anasayfa():
+    return render_template('anasayfa.html')
 
 
 
@@ -59,9 +59,10 @@ def anasayfa_olcak():
 @app.route('/user_page')
 def user_page():
     if 'email' in session and session['email'] != None:
-        return render_template('user_page.html', orders=get_orders_for_profile(session['email']), email=session['email'])
+        return render_template('user_page.html', orders=get_orders_for_profile(session['email']), email=session['email'], address=get_address(session['email']))
     else:
         return redirect(url_for('main_page'))
+
 
 
 @app.route('/payment_page', methods=['GET', 'POST'])
@@ -78,14 +79,10 @@ def payment_page():
 
             insert_private_info(address, card_name, card_number, expiration_date, cvv, session['email'])
 
-            ###### New Code ######
-            # Get all the items that have email = session['email'] from the shopping_cart table
-            # Generate random order Id
             order_id = random.randint(1, 1000000000)
 
             insert_into_orders(table = 'shopping_cart', email=session['email'],order_id=order_id)
 
-            ###### End New Code ######
             return redirect(url_for('payment_success'))
         else:
             
@@ -98,7 +95,7 @@ def payment_page():
 
 @app.route('/payment_success')
 def payment_success():
-    return render_template('payment_success.html')
+     return render_template('user_page.html', orders=get_orders_for_profile(session['email']), email=session['email'])
 
 
 @app.route('/payment_fail')
@@ -181,6 +178,92 @@ def remove_item(item_id):
 
     # Redirect back to the main page after removing the item
     return redirect(url_for('shopping_cart'))
+
+
+@app.route('/listing')
+def listing():
+    if 'email' in session and session['email'] != None:
+        current_email = session['email']
+        chosen_option = session.get('chosen_option', None)
+        if chosen_option == None:
+            product = get_all_shoes()
+        elif chosen_option == "Desc":
+            product = descent_get_shoes()
+        elif chosen_option == "Normal":
+            product = get_all_shoes()
+        elif chosen_option == "Asc":
+            product = ascent_get_shoes()
+
+        elif chosen_option == "Men":
+            product = get_men_shoes()
+        elif chosen_option == "Women":
+            product = get_women_shoes()
+        else:
+            product = get_brand_shoes(chosen_option)
+        return render_template('listing.html', products=product, mail=current_email)
+    else:
+        return redirect(url_for('main_page'))
+
+
+
+@app.route('/add_item', methods=['POST'])
+def add_item():
+    chosen_option = session.get('chosen_option', None)
+    if chosen_option == None:
+        product = get_all_shoes()
+    elif chosen_option == "Desc":
+        product = descent_get_shoes()
+    elif chosen_option == "Normal":
+        product = get_all_shoes()
+    elif chosen_option == "Asc":
+        product = ascent_get_shoes()
+
+    elif chosen_option == "Men":
+        product = get_men_shoes()
+    elif chosen_option == "Women":
+        product = get_women_shoes()
+    else:
+        product = get_brand_shoes(chosen_option)
+        
+    item_id = request.form.get('item_id')
+    price = request.form.get('price')
+    price = float(str(price[1:]))
+    quantity = 1
+    current_email = session['email']
+    email = current_email
+    brand = request.form.get('brand')
+    model = request.form.get('model')
+
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor()
+
+    # Check if the item with the given item_id already exists
+    
+    select_query = "SELECT quantity FROM shopping_cart WHERE item_id = %s"
+    cursor.execute(select_query, (item_id,))
+    quan = cursor.fetchone()
+    
+
+    if quan:
+        # If the item exists, update the quantity
+        update_query = "UPDATE shopping_cart SET Quantity = Quantity + 1 WHERE item_id = %s;"
+        cursor.execute(update_query, (item_id,))
+        connection.commit()
+    else:
+        # If the item does not exist, insert a new row
+        add_query = "INSERT INTO shopping_cart (item_id, Price, Quantity, email, brand, model) VALUES (%s, %s, %s, %s, %s, %s);"
+        cursor.execute(add_query, (item_id, price, quantity, email, brand, model,))
+        connection.commit()
+
+    cursor.close()
+    connection.close()
+    return render_template('listing.html', products=product, mail=current_email)  
+
+@app.route('/process', methods=['POST'])
+def process():
+    chosen_option = request.form.get('option')
+    session['chosen_option'] = chosen_option
+    return redirect(url_for('listing'))
 
 
 ##### End New Code #####
